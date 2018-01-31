@@ -2,14 +2,14 @@ source('code/clean.R')
 
 #bodyfat.clean=bodyfat[-c(42,39),-1]
 
-############################## Simple linear model ##############################
+### Simple linear model
 
 #bodyfat.clean <- bodyfat.clean[,-1]
 #bodyfat.clean[,c(2:15)] <- scale(bodyfat.clean[,c(2:15)])
 model.clean=lm(DENSITY~.,data = bodyfat.clean[,-1])
 summary(step(model.clean,direction = "both"))
 
-##### The results before and after scaling doesn't have a significant difference.
+#     The results before and after scaling doesn't have a significant difference.
 #X <- scale(model.matrix(model.clean)[,-1])
 X <- model.matrix(model.clean)[,-c(1,2)]
 Y <- bodyfat.clean[,2]
