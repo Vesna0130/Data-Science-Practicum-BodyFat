@@ -1,4 +1,4 @@
-############################## Read data ##############################
+### Read data
 
 #setwd("~/Module 1")
 library(readr)
@@ -6,10 +6,10 @@ bodyfat <- read_csv("data/BodyFat.csv", col_types = cols(IDNO = col_skip()))
 
 
 
-############################## Clean data ##############################
+### Clean data
 
-##### The below table shows that only ‘Density’ has a significant linear
-##### relationship with ‘Fat’, which proves Siri's equation to be correct.
+#     The below table shows that only ‘Density’ has a significant linear
+#     relationship with ‘Fat’, which proves Siri's equation to be correct.
 
 summary(lm.fat <- lm(BODYFAT ~ .,data = bodyfat))
 #Coefficients:
@@ -32,7 +32,7 @@ summary(lm.fat <- lm(BODYFAT ~ .,data = bodyfat))
 #WRIST        3.640e-02  1.480e-01   0.246    0.806 
 
 
-##### There are several significant predictors for the response variable ‘Density’.
+#     There are several significant predictors for the response variable ‘Density’.
 summary(lm.density <- lm(DENSITY ~ ., data = bodyfat[-42,-1]))
 plot(lm.density, which = 4)
 abline(h = 4/(252-15), lty = 2)
@@ -40,8 +40,8 @@ summary(lm.density1 <- lm(DENSITY ~ ., data = bodyfat[-42,-1]))
 layout(matrix(1:4, ncol = 2))
 plot(lm.density1)
 
-##### The 39th gay weights 363 ponds and the 42nd gay is only 29.50 inches tall
-##### They are considered to be outliers
+#     The 39th gay weights 363 ponds and the 42nd gay is only 29.50 inches tall
+#     They are considered to be outliers
 
 # BODYFAT DENSITY   AGE WEIGHT HEIGHT ADIPOSITY  NECK CHEST ABDOMEN   HIP THIGH  KNEE
 #   33.8  1.0202    46 363.15  72.25      48.9  51.2 136.2   148.1 147.7  87.3  49.1
@@ -59,13 +59,14 @@ library(car)
 outlierTest(lm.density2)
 
 bodyfat[c(182,224),]
-##### the 182nd and 224th points both have relatively large density, 
-##### which leads to small body fat percentage compare the the fitted value.
-# 182 bodyfat = 0.0 density = 1.1089
-# 224 bodyfat = 6.1 density = 1.0874
+
+#     the 182nd and 224th points both have relatively large density, 
+#     which leads to small body fat percentage compare the the fitted value.
+#             182 bodyfat = 0.0 density = 1.1089
+#             224 bodyfat = 6.1 density = 1.0874
 
 
-############################## Extreme value ##############################
+### Extreme value
 
 # Multivariate Imputation by Chained Equations
 
