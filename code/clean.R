@@ -3,15 +3,14 @@
 #setwd("~/Module 1")
 library(readr)
 bodyfat <- read_csv("data/BodyFat.csv", col_types = cols(IDNO = col_skip()))
-
-
+attach(bodyfat)
 
 ### Clean data
 
 #     The below table shows that only ‘Density’ has a significant linear
 #     relationship with ‘Fat’, which proves Siri's equation to be correct.
 
-summary(lm.fat <- lm(BODYFAT ~ .,data = bodyfat))
+summary(lm.fat <- lm(BODYFAT ~ ., data = bodyfat))
 #Coefficients:
 #              Estimate Std. Error t value Pr(>|t|)    
 #(Intercept)  4.190e+02  9.802e+00  42.750   <2e-16 ***
@@ -32,13 +31,23 @@ summary(lm.fat <- lm(BODYFAT ~ .,data = bodyfat))
 #WRIST        3.640e-02  1.480e-01   0.246    0.806 
 
 
-#     There are several significant predictors for the response variable ‘Density’.
-summary(lm.density <- lm(DENSITY ~ ., data = bodyfat[-42,-1]))
-plot(lm.density, which = 4)
+plot(1/DENSITY, BODYFAT)
+D <- 1/DENSITY
+plot(lm(BODYFAT ~ D))
+
+B = 495*D-450
+plot(B-BODYFAT)
+
+# 48, 76, 96
+
+
+#     There are several significant predictors for the response variable ‘Bodyfat’.
+summary(lm1 <- lm(BODYFAT ~ ., data = bodyfat[-42,-2]))
+plot(lm1, which = 4)
 abline(h = 4/(252-15), lty = 2)
-summary(lm.density1 <- lm(DENSITY ~ ., data = bodyfat[-42,-1]))
+summary(lm2 <- lm(BODYFAT ~ ., data = bodyfat[-42,-2]))
 layout(matrix(1:4, ncol = 2))
-plot(lm.density1)
+plot(lm2)
 
 #     The 39th gay weights 363 ponds and the 42nd gay is only 29.50 inches tall
 #     They are considered to be outliers
@@ -48,15 +57,15 @@ plot(lm.density1)
 #   31.7  1.0250    44 205.00  29.50      29.9  36.6 106.0   104.3 115.5  70.6  42.5
 
 layout(1)
-plot(lm.density1, which = 4)
+plot(lm2, which = 4)
 abline( h = 4/(251-15), col = 'red', lty = 2)
-summary(lm.density2 <- lm(DENSITY ~ ., data = bodyfat[-c(39,42),-1]))
+summary(lm3 <- lm(BODYFAT ~ ., data = bodyfat[-c(39,42),-2]))
 
 layout(matrix(1:4, ncol = 2))
-plot(lm.density2)
+plot(lm3)
 
 library(car)
-outlierTest(lm.density2)
+outlierTest(lm3)
 
 bodyfat[c(182,224),]
 
@@ -70,14 +79,17 @@ bodyfat[c(182,224),]
 
 # Multivariate Imputation by Chained Equations
 
-bodyfat2 <- bodyfat
-bodyfat2[c(182, 224), c(1,2)] <- NA
+#bodyfat2 <- bodyfat
+#bodyfat2[c(182, 224), c(1,2)] <- NA
 
-library(mice)
-set.seed(12345)
-miceMod <- mice(bodyfat2, method="rf")
-miceOutput <- complete(miceMod)
-miceOutput[c(182,224),]
+#library(mice)
+#set.seed(12345)
+#miceMod <- mice(bodyfat2, method="rf")
+#miceOutput <- complete(miceMod)
+#miceOutput[c(182,224),]
 
-bodyfat.clean <- miceOutput[-c(39,42), ]
+bodyfat.clean <- bodyfat[-c(39,42,182,48,76,96), ]
 write_csv(bodyfat.clean, "data/BodyFatClean.csv")
+
+detach(bodyfat)
+
