@@ -1,6 +1,6 @@
 # Data-Science-Practicum-BodyFat
 ##  Body Fat Percentage Analysis
-The project is a group work in **Stat 628: Data Science-Practicum**(University of Wisconsin-Madison). In this project, with the given data set, we aim at examining the relationships between Percentage of Body fat and commonly available measurements with multiple linear regression models.
+The project is a group work in **Stat 628: Data Science Practicum**(University of Wisconsin-Madison). In this project, with the given data set, we aim at examining the relationships between Percentage of Body fat and commonly available measurements with multiple linear regression models.
 
 The results of analysis show that the percentage of body fat of American Men is negative related with Height and Wrist, positive related with Abdomen size and Age.
 
